@@ -33,4 +33,4 @@ replay_pid*
 *.iml
 
 # Own test files etc
-src\Test.java
+src/Test.java
