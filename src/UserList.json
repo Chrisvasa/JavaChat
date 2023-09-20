@@ -1,0 +1,17 @@
+{
+    "chris": {
+        "username" : "chrisvasa",
+        "password" : "hej123",
+        "online" : false
+    },
+    "leif" : {
+        "username" : "leif1337",
+        "password" : "leif1337",
+        "online" : true
+    },
+    "KBR" : {
+        "username" : "KBR",
+        "password" : "noob",
+        "online" : false
+    }
+}
