@@ -23,4 +23,8 @@ Tjatt-JPT is a simple Java Swing application that simulates a basic chat system.
 
 ## How it Works
 
-Currently the program initializes a list of users with usernames and passwords. When you click the "Login" button, the program checks if the entered credentials match any of the predefined users. If a match is found, you'll see a "Login Successful!" message; otherwise, you'll see an "Invalid username or password!" message.
+<p>
+Currently the program initializes a list of users with usernames and passwords. <br>
+When you click the "Login" button, the program checks if the entered credentials match any of the predefined users.<br>
+If a match is found, you'll see a "Login Successful!" message; otherwise, you'll see an "Invalid username or password!" message.
+</p>
