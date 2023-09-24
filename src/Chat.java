@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
 import com.formdev.flatlaf.FlatLightLaf;
@@ -21,11 +20,12 @@ public class Chat {
         }
         UIManager.put("Button.arc", 0);
 
-        // Initialize users and add them to an ArrayList<User>
-        User chris = new User("chrisvasa", "hej123");
-        User leif = new User("leif", "hej123");
-        User toxic = new User("MrToxic", "hej123");
-        ArrayList<User> userList = new ArrayList<>(Arrays.asList(chris, leif, toxic));
+        // TEMP - Initialize users and add them to an ArrayList<User>
+        ArrayList<User> userList = new ArrayList<>();
+        userList.add(new User("chrisvasa", "hej123"));
+        userList.add(new User("MrToxic", "hej123"));
+        userList.add(new User("GIGACHAD", "hej123"));
+        userList.add(new User("IfYouAsk", "YeShallRecieve"));
 
         // Creates the Window fram and sets the size
         JFrame frame = new JFrame("Tjatt-JPT 2.0");
@@ -65,12 +65,18 @@ public class Chat {
         // Text Area at the Center
         JTextArea textArea = new JTextArea();
         textArea.setFont(new Font("Dialog", Font.PLAIN, 16));
+        textArea.setWrapStyleWord(true);
+        textArea.setLineWrap(true);
+        // textArea.setOpaque(false);
+        textArea.setEditable(false);
+        textArea.setFocusable(false);
+        textArea.setBackground(UIManager.getColor("Label.background"));
+        textArea.setBorder(UIManager.getBorder("Label.border"));
 
         // People list
-        JPanel peoplePanel = new JPanel();
-        String[] users = usersOnline(userList);
-        JList people = new JList(users);
-        peoplePanel.add(people);
+        JPanel peoplePanel = new JPanel(new MigLayout("fill"));
+        JList people = new JList(usersOnline(userList));
+        peoplePanel.add(people, "growy");
 
         // Adding components to the Window frame
         frame.getContentPane().add(BorderLayout.CENTER, loginPanel);
