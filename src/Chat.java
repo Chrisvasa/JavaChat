@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
 import com.formdev.flatlaf.FlatLightLaf;
@@ -74,7 +76,9 @@ public class Chat {
 
         // People list
         JPanel peoplePanel = new JPanel(new MigLayout("fill"));
-        JList people = new JList(userList.usersOnline());
+        // Initialize the JList with a DefaultListModel
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        JList<String> people = new JList(listModel);
         peoplePanel.add(people, "growy");
 
         // Adding components to the Window frame
@@ -92,11 +96,20 @@ public class Chat {
                 String password = new String(passInput.getPassword());
 
                 if (userList.userLogin(username, password)) {
-                    // toggleFrame(frame);
                     JOptionPane.showMessageDialog(frame, "Login Successful!");
                     logged.append(username);
                     userInput.setText("");
                     passInput.setText("");
+
+                    // Update the user list model with the new online status
+                    DefaultListModel<String> listModel = (DefaultListModel<String>) people.getModel();
+                    listModel.clear(); // Clear the model
+
+                    // Rebuild the model with updated user statuses
+                    for (String userStatus : userList.usersOnline()) {
+                        listModel.addElement(userStatus);
+                    }
+
                     // Remove login panel and show new components
                     loginPanel.setVisible(false);
                     frame.getContentPane().add(BorderLayout.SOUTH, chatPanel);
@@ -105,6 +118,8 @@ public class Chat {
                 } else {
                     JOptionPane.showMessageDialog(frame, "Invalid username or password!");
                 }
+                peoplePanel.repaint();
+                people.repaint();
             }
         });
         send.addActionListener(new ActionListener() {
@@ -112,18 +127,13 @@ public class Chat {
             public void actionPerformed(ActionEvent e) {
                 if (!message.getText().isBlank()) {
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-                    textArea.setText(
-                            textArea.getText() + logged + " [" + LocalDateTime.now().format(formatter) + "]: "
-                                    + message.getText()
-                                    + "\n");
+                    String newMessage = logged + " [" + LocalDateTime.now().format(formatter) + "]: "
+                            + message.getText()
+                            + "\n";
+                    textArea.append(newMessage);
                     message.setText("");
                 }
             }
         });
-    }
-
-    private static void toggleFrame(Frame frame) {
-        frame.setVisible(false);
-        frame.setVisible(true);
     }
 }
