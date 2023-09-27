@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
@@ -19,13 +20,11 @@ public class Chat {
             e.printStackTrace();
         }
         UIManager.put("Button.arc", 0);
-
-        // TEMP - Initialize users and add them to an ArrayList<User>
-        ArrayList<User> userList = new ArrayList<>();
-        userList.add(new User("chrisvasa", "hej123"));
-        userList.add(new User("MrToxic", "hej123"));
-        userList.add(new User("GIGACHAD", "hej123"));
-        userList.add(new User("IfYouAsk", "YeShallRecieve"));
+        UserList userList = new UserList();
+        userList.addUser(new User("chrisvasa", "hej123", "chris@vasa.com"));
+        userList.addUser(new User("MrToxic", "hej123", "cs2@now.com", true));
+        userList.addUser(new User("GIGACHAD", "hej123", "Giga@chad.com", true));
+        userList.addUser(new User("IfYouAsk", "YeShallRecieve", "LIAhunter@mail.com"));
 
         // Creates the Window fram and sets the size
         JFrame frame = new JFrame("Tjatt-JPT 2.0");
@@ -75,7 +74,7 @@ public class Chat {
 
         // People list
         JPanel peoplePanel = new JPanel(new MigLayout("fill"));
-        JList people = new JList(usersOnline(userList));
+        JList people = new JList(userList.usersOnline());
         peoplePanel.add(people, "growy");
 
         // Adding components to the Window frame
@@ -92,7 +91,8 @@ public class Chat {
                 String username = userInput.getText();
                 String password = new String(passInput.getPassword());
 
-                if (isValidUser(username, password, userList)) {
+                if (userList.userLogin(username, password)) {
+                    // toggleFrame(frame);
                     JOptionPane.showMessageDialog(frame, "Login Successful!");
                     logged.append(username);
                     userInput.setText("");
@@ -122,23 +122,8 @@ public class Chat {
         });
     }
 
-    // Checks if the correct user/password combo was given and then returns
-    // true or false
-    private static boolean isValidUser(String user, String pass, ArrayList<User> userList) {
-        for (User u : userList) {
-            if (u._username.equalsIgnoreCase(user) && u._password.equalsIgnoreCase(pass)) {
-                u.isOnline = true;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static String[] usersOnline(ArrayList<User> userList) {
-        StringBuilder sb = new StringBuilder();
-        for (User user : userList) {
-            sb.append(user._username + ",");
-        }
-        return sb.toString().split(",");
+    private static void toggleFrame(Frame frame) {
+        frame.setVisible(false);
+        frame.setVisible(true);
     }
 }
