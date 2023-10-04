@@ -1,12 +1,10 @@
+package client;
 import java.awt.BorderLayout;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
@@ -122,6 +120,7 @@ public class Chat {
                 people.repaint();
             }
         });
+
         send.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
