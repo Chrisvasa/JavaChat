@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class Client {
     private Socket socket;
@@ -18,23 +17,21 @@ public class Client {
         try {
             this.socket = socket;
             this.username = username;
+            System.out.println(username);
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            bufferedWriter.write(username);
+            bufferedWriter.newLine();
+            bufferedWriter.flush();
         } catch (IOException e) {
             closeEverything(socket, bufferedReader, bufferedWriter);
         }
     }
 
     // Send messages to our clienthandler
-    public void sendMessage() {
+    public void sendMessage(String messageToSend) {
         try {
-            bufferedWriter.write(username);
-            bufferedWriter.newLine();
-            bufferedWriter.flush();
-
-            Scanner scanner = new Scanner(System.in);
-            while (socket.isConnected()) {
-                String messageToSend = scanner.nextLine();
+            if (socket.isConnected()) {
                 bufferedWriter.write(username + ": " + messageToSend);
                 bufferedWriter.newLine();
                 bufferedWriter.flush();
@@ -81,16 +78,11 @@ public class Client {
         }
     }
 
-    public static void main(String[] args) throws IOException {
-        Scanner scanner = new Scanner(System.in);
-        System.out.printf("Enter your username for the group chat: ");
-        String username = scanner.nextLine();
-        Socket socket = new Socket("localhost", 6969);
-        Client client = new Client(socket, username);
-        // These are both blocking methods (Basically halt our the client)
-        // But since these are on separate threads
-        // they both will be running at the same time
-        client.listenForMessage();
-        client.sendMessage();
-    }
+    // public static void main(String[] args) throws IOException {
+    // // These are both blocking methods (Basically halt our the client)
+    // // But since these are on separate threads
+    // // they both will be running at the same time
+    // client.listenForMessage();
+    // client.sendMessage();
+    // }
 }

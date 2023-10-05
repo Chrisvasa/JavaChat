@@ -1,8 +1,12 @@
 package client;
+
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -11,7 +15,9 @@ import javax.swing.*;
 import com.formdev.flatlaf.FlatLightLaf;
 
 public class Chat {
-    public static void main(String[] args) {
+    static Client client;
+
+    public static void main(String[] args) throws UnknownHostException, IOException {
         // Generic UI design (Look and feel)
         FlatLightLaf.setup();
         try {
@@ -83,7 +89,6 @@ public class Chat {
         frame.getContentPane().add(BorderLayout.CENTER, loginPanel);
         frame.setVisible(true);
 
-        StringBuilder logged = new StringBuilder(); // TEMP - To keep track of logged in user
         // Listens to clicks on the login button
         // Then gets the input from the username and password field
         // and calls isValidUser method to check input
@@ -95,9 +100,7 @@ public class Chat {
 
                 if (userList.userLogin(username, password)) {
                     JOptionPane.showMessageDialog(frame, "Login Successful!");
-                    logged.append(username);
-                    userInput.setText("");
-                    passInput.setText("");
+                    initializeUser(username);
 
                     // Update the user list model with the new online status
                     DefaultListModel<String> listModel = (DefaultListModel<String>) people.getModel();
@@ -125,8 +128,9 @@ public class Chat {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!message.getText().isBlank()) {
+                    client.sendMessage(message.getText());
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-                    String newMessage = logged + " [" + LocalDateTime.now().format(formatter) + "]: "
+                    String newMessage = " [" + LocalDateTime.now().format(formatter) + "]: "
                             + message.getText()
                             + "\n";
                     textArea.append(newMessage);
@@ -134,5 +138,16 @@ public class Chat {
                 }
             }
         });
+    }
+
+    private static void initializeUser(String userName) {
+        try {
+            Socket socket = new Socket("localhost", 6969);
+            client = new Client(socket, userName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        client.listenForMessage();
     }
 }
