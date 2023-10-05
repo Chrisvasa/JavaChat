@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -101,7 +102,7 @@ public class Chat {
                 if (userList.userLogin(username, password)) {
                     JOptionPane.showMessageDialog(frame, "Login Successful!");
                     initializeUser(username);
-
+                    listen(textArea);
                     // Update the user list model with the new online status
                     DefaultListModel<String> listModel = (DefaultListModel<String>) people.getModel();
                     listModel.clear(); // Clear the model
@@ -119,8 +120,8 @@ public class Chat {
                 } else {
                     JOptionPane.showMessageDialog(frame, "Invalid username or password!");
                 }
-                peoplePanel.repaint();
-                people.repaint();
+                // peoplePanel.repaint();
+                // people.repaint();
             }
         });
 
@@ -130,7 +131,7 @@ public class Chat {
                 if (!message.getText().isBlank()) {
                     client.sendMessage(message.getText());
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-                    String newMessage = " [" + LocalDateTime.now().format(formatter) + "]: "
+                    String newMessage = "\n [" + LocalDateTime.now().format(formatter) + "] Me: "
                             + message.getText()
                             + "\n";
                     textArea.append(newMessage);
@@ -140,6 +141,28 @@ public class Chat {
         });
     }
 
+    // This will be waiting for a message that are
+    // broadcasted broadcastMessage in ClientHandler
+    // Each client will have a separate thread that is waiting for messages.
+    public static void listen(JTextArea textArea) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                BufferedReader bufferedReader = client.getReader();
+                while (true) {
+                    try {
+                        String msg = bufferedReader.readLine();
+                        if (msg != null) {
+                            textArea.append(msg + "\n");
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+    }
+
     private static void initializeUser(String userName) {
         try {
             Socket socket = new Socket("localhost", 6969);
@@ -147,7 +170,5 @@ public class Chat {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        client.listenForMessage();
     }
 }
