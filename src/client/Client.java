@@ -32,7 +32,7 @@ public class Client {
     public void sendMessage(String messageToSend) {
         try {
             if (socket.isConnected()) {
-                bufferedWriter.write(username + ": " + messageToSend);
+                bufferedWriter.write("\n" + username + ": " + messageToSend + "\n");
                 bufferedWriter.newLine();
                 bufferedWriter.flush();
             }
@@ -41,25 +41,29 @@ public class Client {
         }
     }
 
-    // This will be waiting for a message that are
-    // broadcasted broadcastMessage in ClientHandler
-    // Each client will have a separate thread that is waiting for messages.
-    public void listenForMessage() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String messageFromGroupChat;
+    // // This will be waiting for a message that are
+    // // broadcasted broadcastMessage in ClientHandler
+    // // Each client will have a separate thread that is waiting for messages.
+    // public void listenForMessage() {
+    // new Thread(new Runnable() {
+    // @Override
+    // public void run() {
+    // String messageFromGroupChat;
 
-                while (socket.isConnected()) {
-                    try {
-                        messageFromGroupChat = bufferedReader.readLine();
-                        System.out.println(messageFromGroupChat);
-                    } catch (IOException e) {
-                        closeEverything(socket, bufferedReader, bufferedWriter);
-                    }
-                }
-            }
-        }).start();
+    // while (socket.isConnected()) {
+    // try {
+    // messageFromGroupChat = bufferedReader.readLine();
+    // System.out.println(messageFromGroupChat);
+    // } catch (IOException e) {
+    // closeEverything(socket, bufferedReader, bufferedWriter);
+    // }
+    // }
+    // }
+    // }).start();
+    // }
+
+    public BufferedReader getReader() {
+        return bufferedReader;
     }
 
     public void closeEverything(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter) {
