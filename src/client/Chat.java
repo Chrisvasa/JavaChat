@@ -115,7 +115,7 @@ public class Chat {
                     // Remove login panel and show new components
                     loginPanel.setVisible(false);
                     frame.getContentPane().add(BorderLayout.SOUTH, chatPanel);
-                    frame.getContentPane().add(BorderLayout.CENTER, textArea);
+                    frame.getContentPane().add(BorderLayout.CENTER, new JScrollPane(textArea));
                     frame.getContentPane().add(BorderLayout.EAST, peoplePanel);
                 } else {
                     JOptionPane.showMessageDialog(frame, "Invalid username or password!");
