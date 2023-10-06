@@ -41,27 +41,6 @@ public class Client {
         }
     }
 
-    // // This will be waiting for a message that are
-    // // broadcasted broadcastMessage in ClientHandler
-    // // Each client will have a separate thread that is waiting for messages.
-    // public void listenForMessage() {
-    // new Thread(new Runnable() {
-    // @Override
-    // public void run() {
-    // String messageFromGroupChat;
-
-    // while (socket.isConnected()) {
-    // try {
-    // messageFromGroupChat = bufferedReader.readLine();
-    // System.out.println(messageFromGroupChat);
-    // } catch (IOException e) {
-    // closeEverything(socket, bufferedReader, bufferedWriter);
-    // }
-    // }
-    // }
-    // }).start();
-    // }
-
     public BufferedReader getReader() {
         return bufferedReader;
     }
@@ -81,12 +60,4 @@ public class Client {
             e.printStackTrace();
         }
     }
-
-    // public static void main(String[] args) throws IOException {
-    // // These are both blocking methods (Basically halt our the client)
-    // // But since these are on separate threads
-    // // they both will be running at the same time
-    // client.listenForMessage();
-    // client.sendMessage();
-    // }
 }

@@ -2,18 +2,22 @@ package client;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
 import com.formdev.flatlaf.FlatLightLaf;
+
+import data.DataAccess;
 
 public class Chat {
     static Client client;
@@ -27,11 +31,6 @@ public class Chat {
             e.printStackTrace();
         }
         UIManager.put("Button.arc", 0);
-        UserList userList = new UserList();
-        userList.addUser(new User("chrisvasa", "hej123", "chris@vasa.com"));
-        userList.addUser(new User("MrToxic", "hej123", "cs2@now.com", true));
-        userList.addUser(new User("GIGACHAD", "hej123", "Giga@chad.com", true));
-        userList.addUser(new User("IfYouAsk", "YeShallRecieve", "LIAhunter@mail.com"));
 
         // Creates the Window fram and sets the size
         JFrame frame = new JFrame("Tjatt-JPT 2.0");
@@ -99,26 +98,26 @@ public class Chat {
                 String username = userInput.getText();
                 String password = new String(passInput.getPassword());
 
-                if (userList.userLogin(username, password)) {
-                    JOptionPane.showMessageDialog(frame, "Login Successful!");
-                    initializeUser(username);
-                    listen(textArea);
-                    // Update the user list model with the new online status
-                    DefaultListModel<String> listModel = (DefaultListModel<String>) people.getModel();
-                    listModel.clear(); // Clear the model
+                try {
+                    if (DataAccess.verifyLogin(username, password)) {
+                        JOptionPane.showMessageDialog(frame, "Login Successful!");
+                        initializeUser(username);
+                        listenForMessages(textArea);
 
-                    // Rebuild the model with updated user statuses
-                    for (String userStatus : userList.usersOnline()) {
-                        listModel.addElement(userStatus);
+                        // Remove login panel and show new components
+                        loginPanel.setVisible(false);
+                        frame.getContentPane().add(BorderLayout.SOUTH, chatPanel);
+                        frame.getContentPane().add(BorderLayout.CENTER, new JScrollPane(textArea));
+                        frame.getContentPane().add(BorderLayout.EAST, peoplePanel);
+                    } else {
+                        JOptionPane.showMessageDialog(frame, "Invalid username or password!");
                     }
-
-                    // Remove login panel and show new components
-                    loginPanel.setVisible(false);
-                    frame.getContentPane().add(BorderLayout.SOUTH, chatPanel);
-                    frame.getContentPane().add(BorderLayout.CENTER, new JScrollPane(textArea));
-                    frame.getContentPane().add(BorderLayout.EAST, peoplePanel);
-                } else {
-                    JOptionPane.showMessageDialog(frame, "Invalid username or password!");
+                } catch (HeadlessException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                } catch (SQLException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
                 }
                 // peoplePanel.repaint();
                 // people.repaint();
@@ -143,7 +142,7 @@ public class Chat {
     // This will be waiting for a message that are
     // broadcasted broadcastMessage in ClientHandler
     // Each client will have a separate thread that is waiting for messages.
-    public static void listen(JTextArea textArea) {
+    public static void listenForMessages(JTextArea textArea) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -162,6 +161,9 @@ public class Chat {
         }).start();
     }
 
+    // Creates a socket unique for the user,
+    // so that they can be identified on the server.
+    // Also assigns them a username (Can also set the IP adress of the server here)
     private static void initializeUser(String userName) {
         try {
             Socket socket = new Socket("localhost", 6969);
