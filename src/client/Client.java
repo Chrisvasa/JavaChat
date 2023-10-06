@@ -32,7 +32,7 @@ public class Client {
     public void sendMessage(String messageToSend) {
         try {
             if (socket.isConnected()) {
-                bufferedWriter.write("\n" + username + ": " + messageToSend + "\n");
+                bufferedWriter.write(username + ": " + messageToSend);
                 bufferedWriter.newLine();
                 bufferedWriter.flush();
             }

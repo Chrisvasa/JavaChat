@@ -132,8 +132,7 @@ public class Chat {
                     client.sendMessage(message.getText());
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
                     String newMessage = "\n [" + LocalDateTime.now().format(formatter) + "] Me: "
-                            + message.getText()
-                            + "\n";
+                            + message.getText();
                     textArea.append(newMessage);
                     message.setText("");
                 }
@@ -153,7 +152,7 @@ public class Chat {
                     try {
                         String msg = bufferedReader.readLine();
                         if (msg != null) {
-                            textArea.append(msg + "\n");
+                            textArea.append("\n" + msg);
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
