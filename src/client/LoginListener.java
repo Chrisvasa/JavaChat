@@ -41,10 +41,10 @@ public class LoginListener implements ActionListener {
         try {
             if (DataAccess.verifyLogin(username, password)) {
                 JOptionPane.showMessageDialog(frame, "Login Successful!");
+                initializeUser(username);
                 Chat chat = new Chat(client);
                 chat.render();
-                frame.setVisible(false);
-                initializeUser(username);
+                frame.dispose();
 
                 // Remove login panel and show new components
                 loginPanel.setVisible(false);

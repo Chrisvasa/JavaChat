@@ -40,7 +40,8 @@ public class ChatListener implements ActionListener {
     private void handleLogout() {
         // Implement Logout
         // loginPanel.setVisible(true);
-        chat.setVisible(false);
+        Login.setupLogin();
+        chat.dispose();
         // frame.setVisible(true);
     }
 
