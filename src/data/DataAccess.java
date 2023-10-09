@@ -22,11 +22,33 @@ public class DataAccess {
         Statement st = conn.createStatement();
         ResultSet rs = st.executeQuery(
                 String.format(
-                        "SELECT EXISTS( SELECT * FROM public.user WHERE username = '%s' AND password = '%s')",
+                        "UPDATE public.user SET \"isOnline\" = true WHERE username = '%s' AND password = '%s' RETURNING \"isOnline\"",
                         username,
                         password));
 
         while (rs.next()) {
+            System.out.println(rs.getBoolean(1));
+            res = rs.getBoolean(1);
+        }
+        rs.close();
+        st.close();
+
+        return res;
+    }
+
+    public static Boolean setOffline(String username) throws SQLException {
+        conn = DriverManager.getConnection(url, user, pass);
+        Boolean res = false;
+        System.out.println(username);
+
+        Statement st = conn.createStatement();
+        ResultSet rs = st.executeQuery(
+                String.format(
+                        "UPDATE public.user SET \"isOnline\" = false WHERE username = '%s' RETURNING \"isOnline\"",
+                        username));
+
+        while (rs.next()) {
+            System.out.println(rs.getBoolean(1));
             res = rs.getBoolean(1);
         }
         rs.close();

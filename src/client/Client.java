@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.sql.SQLException;
+
+import data.DataAccess;
 
 public class Client {
     private Socket socket;
@@ -13,7 +16,7 @@ public class Client {
     private BufferedWriter bufferedWriter;
     private String username;
 
-    public Client(Socket socket, String username) {
+    public Client(Socket socket, String username) throws SQLException {
         try {
             this.socket = socket;
             this.username = username;
@@ -25,6 +28,7 @@ public class Client {
             bufferedWriter.flush();
         } catch (IOException e) {
             closeEverything(socket, bufferedReader, bufferedWriter);
+            DataAccess.setOffline(username);
         }
     }
 
