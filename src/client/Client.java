@@ -8,6 +8,8 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.sql.SQLException;
 
+import javax.swing.JTextArea;
+
 import data.DataAccess;
 
 public class Client {
@@ -16,7 +18,7 @@ public class Client {
     private BufferedWriter bufferedWriter;
     private String username;
 
-    public Client(Socket socket, String username) throws SQLException {
+    public Client(Socket socket, String username) {
         try {
             this.socket = socket;
             this.username = username;
@@ -28,7 +30,6 @@ public class Client {
             bufferedWriter.flush();
         } catch (IOException e) {
             closeEverything(socket, bufferedReader, bufferedWriter);
-            DataAccess.setOffline(username);
         }
     }
 
@@ -60,8 +61,32 @@ public class Client {
             if (socket != null) {
                 socket.close();
             }
+            DataAccess.setOffline(username);
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+    }
+
+    // This will be waiting for a message that are
+    // broadcasted broadcastMessage in ClientHandler
+    // Each client will have a separate thread that is waiting for messages.
+    public void listenForMessages(JTextArea textArea) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        String msg = bufferedReader.readLine();
+                        if (msg != null) {
+                            textArea.append("\n" + msg);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
     }
 }

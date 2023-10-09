@@ -1,19 +1,15 @@
 package client;
 
 import java.awt.BorderLayout;
-import java.awt.Font;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.UnknownHostException;
 
 import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
 import com.formdev.flatlaf.FlatLightLaf;
 
-public class GUI {
-    static Client client;
+public class Login {
 
-    public static void main(String[] args) throws UnknownHostException, IOException {
+    public static void main(String[] args) {
         // Generic UI design (Look and feel)
         FlatLightLaf.setup();
         try {
@@ -47,45 +43,11 @@ public class GUI {
         loginPanel.add(passInput, "growx, wrap");
         loginPanel.add(loginButton, "span 2, growx, alignx center");
 
-        // Chat component
-        JPanel chatPanel = new JPanel();
-        JButton send = new JButton("Send");
-        JButton reset = new JButton("Reset");
-        JTextField message = new JTextField();
-        message.setColumns(12);
-        // Add the components to the chat panel
-        chatPanel.add(message);
-        chatPanel.add(send);
-        chatPanel.add(reset);
-
-        // Text Area at the Center
-        JTextArea textArea = new JTextArea();
-        textArea.setFont(new Font("Dialog", Font.PLAIN, 16));
-        textArea.setWrapStyleWord(true);
-        textArea.setLineWrap(true);
-        // textArea.setOpaque(false);
-        textArea.setEditable(false);
-        textArea.setFocusable(false);
-        textArea.setBackground(UIManager.getColor("Label.background"));
-        textArea.setBorder(UIManager.getBorder("Label.border"));
-
-        // People list
-        JPanel peoplePanel = new JPanel(new MigLayout("fill"));
-        // Initialize the JList with a DefaultListModel
-        DefaultListModel<String> listModel = new DefaultListModel<>();
-        JList<String> people = new JList(listModel);
-        peoplePanel.add(people, "growy");
-
         // Adding components to the Window frame
         frame.getContentPane().add(BorderLayout.CENTER, loginPanel);
         frame.setVisible(true);
 
-        // Listens to clicks on the login button
-        // Then gets the input from the username and password field
-        // and calls isValidUser method to check input
-        ActionListener actionListener = new Listener(userInput, passInput, frame, textArea, loginPanel, chatPanel,
-                peoplePanel, message);
+        ActionListener actionListener = new LoginListener(userInput, passInput, frame, loginPanel);
         loginButton.addActionListener(actionListener);
-        send.addActionListener(actionListener);
     }
 }

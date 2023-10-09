@@ -67,7 +67,7 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    public void removeCLientHandler() {
+    public void removeClientHandler() {
         clientHandlers.remove(this);
         broadcastMessage("SERVER: " + clientUserName + " has left the chat!");
     }
@@ -76,7 +76,7 @@ public class ClientHandler implements Runnable {
     // streams are closed when you close the wrapper.
     // Closing a socket will also close the sockets input/output stream.
     public void closeEverything(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter) {
-        removeCLientHandler();
+        removeClientHandler();
         try {
             if (bufferedReader != null) {
                 bufferedReader.close();
