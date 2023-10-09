@@ -3,7 +3,6 @@ package client;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -13,10 +12,12 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 
 public class Chat {
-    private Client client;
+    private String username;
+    private JFrame frame;
 
-    public Chat(Client client) {
-        this.client = client;
+    public Chat(String username, JFrame frame) {
+        this.username = username;
+        this.frame = frame;
     }
 
     public void render() {
@@ -25,7 +26,7 @@ public class Chat {
         chat.setResizable(false);
         chat.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         chat.setSize(360, 480);
-        chat.setLocationRelativeTo(null);
+        chat.setLocationRelativeTo(frame);
 
         // Chat component
         JPanel chatPanel = new JPanel();
@@ -33,6 +34,7 @@ public class Chat {
         JButton reset = new JButton("Logout");
         JTextField message = new JTextField();
         message.setColumns(12);
+
         // Add the components to the chat panel
         chatPanel.add(message);
         chatPanel.add(send);
@@ -43,6 +45,7 @@ public class Chat {
         textArea.setFont(new Font("Dialog", Font.PLAIN, 16));
         textArea.setWrapStyleWord(true);
         textArea.setLineWrap(true);
+
         // textArea.setOpaque(false);
         textArea.setEditable(false);
         textArea.setFocusable(false);
@@ -61,7 +64,7 @@ public class Chat {
         // chat.getContentPane().add(BorderLayout.EAST, peoplePanel);
         chat.setVisible(true);
 
-        ActionListener actionListener = new ChatListener(chat, textArea, message, client);
+        ActionListener actionListener = new ChatListener(chat, textArea, message, username);
         send.addActionListener(actionListener);
         reset.addActionListener(actionListener);
     }

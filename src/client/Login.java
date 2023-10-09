@@ -2,7 +2,6 @@ package client;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
-
 import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
 import com.formdev.flatlaf.FlatLightLaf;
@@ -37,9 +36,11 @@ public class Login {
         JTextField userInput = new JTextField(10);
         JLabel passLabel = new JLabel("Password");
         JPasswordField passInput = new JPasswordField(10);
+
         // Sets size of input fields
         userInput.setColumns(12);
         passInput.setColumns(12);
+
         // Adds the login components to the login panel
         loginPanel.add(userLabel);
         loginPanel.add(userInput, "growx, wrap");
@@ -51,7 +52,7 @@ public class Login {
         frame.getContentPane().add(BorderLayout.CENTER, loginPanel);
         frame.setVisible(true);
 
-        ActionListener actionListener = new LoginListener(userInput, passInput, frame, loginPanel);
+        ActionListener actionListener = new LoginListener(userInput, passInput, frame);
         loginButton.addActionListener(actionListener);
     }
 }

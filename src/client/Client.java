@@ -17,11 +17,13 @@ public class Client {
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
     private String username;
+    private boolean isRunning;
 
     public Client(Socket socket, String username) {
         try {
             this.socket = socket;
             this.username = username;
+            this.isRunning = true;
             System.out.println(username);
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -50,6 +52,19 @@ public class Client {
         return bufferedReader;
     }
 
+    public void closeSocket() {
+        try {
+            setRunning(false);
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setRunning(boolean setValue) {
+        isRunning = setValue;
+    }
+
     public void closeEverything(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter) {
         try {
             if (bufferedReader != null) {
@@ -76,7 +91,7 @@ public class Client {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                while (true) {
+                while (isRunning) {
                     try {
                         String msg = bufferedReader.readLine();
                         if (msg != null) {
@@ -86,6 +101,7 @@ public class Client {
                         e.printStackTrace();
                     }
                 }
+                return;
             }
         }).start();
     }
