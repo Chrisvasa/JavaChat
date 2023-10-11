@@ -14,7 +14,6 @@ public class Server {
     }
 
     public void startServer() {
-
         try {
             while (!serverSocket.isClosed()) {
                 // Blocking method -- Program will be halted here until a client connects.
@@ -26,7 +25,6 @@ public class Server {
                 thread.start();
             }
         } catch (IOException e) {
-
         }
     }
 

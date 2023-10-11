@@ -55,8 +55,11 @@ public class Client {
     public void closeSocket() {
         try {
             setRunning(false);
+            DataAccess.setOffline(username);
             socket.close();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -67,6 +70,7 @@ public class Client {
 
     public void closeEverything(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter) {
         try {
+            DataAccess.setOffline(username);
             if (bufferedReader != null) {
                 bufferedReader.close();
             }
@@ -76,7 +80,6 @@ public class Client {
             if (socket != null) {
                 socket.close();
             }
-            DataAccess.setOffline(username);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SQLException e) {

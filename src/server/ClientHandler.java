@@ -39,16 +39,15 @@ public class ClientHandler implements Runnable {
         // Everything in this method is run on a separate thread
         String messageFromClient;
 
-        while (!socket.isClosed()) {
+        while (socket.isConnected()) {
             try {
                 messageFromClient = bufferedReader.readLine();
                 broadcastMessage(messageFromClient);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 closeEverything(socket, bufferedReader, bufferedWriter);
                 break;
             }
         }
-        removeClientHandler();
     }
 
     public void broadcastMessage(String messageToSend) {
