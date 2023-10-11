@@ -6,7 +6,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.ArrayList;
+
+import data.DataAccess;
 
 public class ClientHandler implements Runnable {
 
@@ -68,6 +71,11 @@ public class ClientHandler implements Runnable {
     }
 
     public void removeClientHandler() {
+        try {
+            DataAccess.setOffline(clientUserName);
+        } catch (SQLException e) {
+            System.out.println("FEL XD");
+        }
         clientHandlers.remove(this);
         broadcastMessage("SERVER: " + clientUserName + " has left the chat!");
     }

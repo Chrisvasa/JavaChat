@@ -6,11 +6,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
-import java.sql.SQLException;
 
 import javax.swing.JTextArea;
-
-import data.DataAccess;
 
 public class Client {
     private Socket socket;
@@ -55,11 +52,8 @@ public class Client {
     public void closeSocket() {
         try {
             setRunning(false);
-            DataAccess.setOffline(username);
             socket.close();
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -70,7 +64,6 @@ public class Client {
 
     public void closeEverything(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter) {
         try {
-            DataAccess.setOffline(username);
             if (bufferedReader != null) {
                 bufferedReader.close();
             }
@@ -81,8 +74,6 @@ public class Client {
                 socket.close();
             }
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
