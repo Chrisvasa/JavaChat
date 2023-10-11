@@ -43,7 +43,8 @@ public class ChatListener implements ActionListener {
     private void handleLogout() {
         // Implement Logout
         client.closeSocket();
-        Login.setupLogin();
+        Login login = new Login();
+        login.setupLogin();
         chat.setVisible(false);
         chat.dispose();
     }
