@@ -8,6 +8,8 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.sql.SQLException;
 
+import javax.swing.JTextArea;
+
 import data.DataAccess;
 
 public class Client {
@@ -15,11 +17,13 @@ public class Client {
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
     private String username;
+    private boolean isRunning;
 
-    public Client(Socket socket, String username) throws SQLException {
+    public Client(Socket socket, String username) {
         try {
             this.socket = socket;
             this.username = username;
+            this.isRunning = true;
             System.out.println(username);
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -28,7 +32,6 @@ public class Client {
             bufferedWriter.flush();
         } catch (IOException e) {
             closeEverything(socket, bufferedReader, bufferedWriter);
-            DataAccess.setOffline(username);
         }
     }
 
@@ -49,8 +52,25 @@ public class Client {
         return bufferedReader;
     }
 
+    public void closeSocket() {
+        try {
+            setRunning(false);
+            DataAccess.setOffline(username);
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setRunning(boolean setValue) {
+        isRunning = setValue;
+    }
+
     public void closeEverything(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter) {
         try {
+            DataAccess.setOffline(username);
             if (bufferedReader != null) {
                 bufferedReader.close();
             }
@@ -62,6 +82,30 @@ public class Client {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+    }
+
+    // This will be waiting for a message that are
+    // broadcasted broadcastMessage in ClientHandler
+    // Each client will have a separate thread that is waiting for messages.
+    public void listenForMessages(JTextArea textArea) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (isRunning) {
+                    try {
+                        String msg = bufferedReader.readLine();
+                        if (msg != null) {
+                            textArea.append("\n" + msg);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                return;
+            }
+        }).start();
     }
 }
