@@ -17,6 +17,7 @@ import javax.swing.UIManager;
 
 import net.miginfocom.swing.MigLayout;
 
+// Sets up the GUI for the chat application
 public class Chat {
     private String username;
     private JFrame frame;
@@ -70,7 +71,6 @@ public class Chat {
         chat.getContentPane().add(BorderLayout.SOUTH, chatPanel);
         chat.getContentPane().add(BorderLayout.CENTER, new JScrollPane(textArea));
         chat.getContentPane().add(BorderLayout.EAST, peoplePanel);
-        // chat.getContentPane().add(BorderLayout.EAST, peoplePanel);
         chat.setVisible(true);
 
         ActionListener actionListener = new ChatListener(chat, textArea, message, username, listModel);

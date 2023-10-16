@@ -12,6 +12,8 @@ import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+// Class that deals with the different events connected to the Chat GUI
+// Handles Initialization of the user, messaging and the closing of the socket if user logs out
 public class ChatListener implements ActionListener {
     private JFrame chat;
     private JTextArea textArea;
@@ -31,6 +33,8 @@ public class ChatListener implements ActionListener {
         client.listenForMessages(textArea);
     }
 
+    // Gets information about which button the user clicked
+    // And then calls the correct method
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand() == "Send") {
             sendMessage();

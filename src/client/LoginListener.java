@@ -9,6 +9,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import data.DataAccess;
 
+// Handles the login of the user and sets up the Chat application if the user does login
 public class LoginListener implements ActionListener {
     private JTextField userInput;
     private JPasswordField pass;
@@ -20,6 +21,8 @@ public class LoginListener implements ActionListener {
         this.frame = frame;
     }
 
+    // Gets information about which button the user clicked
+    // And then calls the correct method
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand() == "Login") {
             handleLogin();

@@ -6,6 +6,7 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
 import com.formdev.flatlaf.FlatLightLaf;
 
+// Sets up the GUI for the login application
 public class Login {
 
     public void setupLogin() {

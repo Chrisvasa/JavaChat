@@ -3,6 +3,7 @@ package data;
 import java.sql.*;
 import java.util.ArrayList;
 
+// Handles communication with the Postgres database
 public class DataAccess {
     private final static String url = "jdbc:postgresql://localhost:5432/postgres";
     private final static String user = "postgres";
