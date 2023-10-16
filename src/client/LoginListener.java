@@ -36,6 +36,7 @@ public class LoginListener implements ActionListener {
                 chat.render();
                 frame.setVisible(false);
                 frame.dispose();
+                chat.addUsersToList(DataAccess.getOnlineUsers(username));
             } else {
                 JOptionPane.showMessageDialog(frame, "Invalid username or password!");
             }

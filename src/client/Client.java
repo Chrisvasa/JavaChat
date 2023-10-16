@@ -6,8 +6,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
-
+import java.sql.SQLException;
 import javax.swing.JTextArea;
+
+import data.DataAccess;
 
 public class Client {
     private Socket socket;
@@ -15,11 +17,13 @@ public class Client {
     private BufferedWriter bufferedWriter;
     private String username;
     private boolean isRunning;
+    private ChatListener chat;
 
-    public Client(Socket socket, String username) {
+    public Client(Socket socket, String username, ChatListener chat) {
         try {
             this.socket = socket;
             this.username = username;
+            this.chat = chat;
             this.isRunning = true;
             System.out.println(username);
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -88,10 +92,15 @@ public class Client {
                 while (isRunning) {
                     try {
                         String msg = bufferedReader.readLine();
+                        if (msg.contains("entered") || msg.contains("has left")) {
+                            chat.addUsersToList(DataAccess.getOnlineUsers(username));
+                        }
                         if (msg != null) {
                             textArea.append("\n" + msg);
                         }
                     } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (SQLException e) {
                         e.printStackTrace();
                     }
                 }

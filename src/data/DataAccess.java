@@ -1,6 +1,7 @@
 package data;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class DataAccess {
     private final static String url = "jdbc:postgresql://localhost:5432/postgres";
@@ -30,7 +31,7 @@ public class DataAccess {
                 System.out.println(rs.getBoolean(1));
                 res = rs.getBoolean(1);
             }
-            return true;
+            return res;
         }
         rs.close();
         st.close();
@@ -57,5 +58,24 @@ public class DataAccess {
         st.close();
 
         return res;
+    }
+
+    public static ArrayList<String> getOnlineUsers(String username) throws SQLException {
+        ArrayList<String> users = new ArrayList<>();
+        conn = DriverManager.getConnection(url, user, pass);
+        Statement st = conn.createStatement();
+
+        ResultSet rs = st
+                .executeQuery(String.format(
+                        "SELECT username FROM public.user WHERE username <> '%s' AND \"isOnline\" = 'true'", username));
+
+        while (rs.next()) {
+            System.out.println(rs.getString(1));
+            users.add(rs.getString(1));
+        }
+        rs.close();
+        st.close();
+
+        return users;
     }
 }

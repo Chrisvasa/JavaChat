@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.net.Socket;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -16,12 +19,15 @@ public class ChatListener implements ActionListener {
     private JTextField message;
     private String username;
     private Client client;
+    private DefaultListModel<String> listModel;
 
-    public ChatListener(JFrame chat, JTextArea textArea, JTextField message, String username) {
+    public ChatListener(JFrame chat, JTextArea textArea, JTextField message, String username,
+            DefaultListModel<String> listModel) {
         this.chat = chat;
         this.textArea = textArea;
         this.message = message;
         this.username = username;
+        this.listModel = listModel;
         initializeUser();
         client.listenForMessages(textArea);
     }
@@ -33,6 +39,13 @@ public class ChatListener implements ActionListener {
             resetMessages();
         } else if (e.getActionCommand() == "Logout") {
             handleLogout();
+        }
+    }
+
+    public void addUsersToList(ArrayList<String> usersList) {
+        listModel.removeAllElements();
+        for (String user : usersList) {
+            listModel.addElement(user);
         }
     }
 
@@ -66,7 +79,7 @@ public class ChatListener implements ActionListener {
     private void initializeUser() {
         try {
             Socket socket = new Socket("localhost", 6969);
-            client = new Client(socket, username);
+            client = new Client(socket, username, this);
         } catch (IOException e) {
             e.printStackTrace();
         }

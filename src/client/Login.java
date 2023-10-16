@@ -7,6 +7,7 @@ import javax.swing.*;
 import com.formdev.flatlaf.FlatLightLaf;
 
 public class Login {
+
     public void setupLogin() {
         // Generic UI design (Look and feel)
         FlatLightLaf.setup();
