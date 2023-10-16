@@ -20,8 +20,10 @@ This is a simple Java Swing-based chat application that allows multiple clients 
 - **DataAccess**: Manages user authentication and tracks online users in a PostgreSQL database.
 
 ## Screenshots
-![image](https://github.com/Chrisvasa/JavaChat/assets/29359169/704094f0-ae6e-46b9-b95e-4afc622795cb)
-![image](https://github.com/Chrisvasa/JavaChat/assets/29359169/2246ee58-4a45-4c4a-b3cb-05881ff52996)
+![image](https://github.com/Chrisvasa/JavaChat/assets/29359169/c592aff4-97e3-4814-8fa0-d4545b2a9278)
+
+![image](https://github.com/Chrisvasa/JavaChat/assets/29359169/abb618f0-f990-4438-be6d-0298b49a08fd)
+
 
 ## Getting Started
 
