@@ -4,6 +4,7 @@ This is a simple Java Swing-based chat application that allows multiple clients 
 
 ## Table of Contents
 - [Features](#features)
+- [Screenshots](#screenshots)
 - [Getting Started](#getting-started)
 - [Server](#server)
 - [Client](#client)
@@ -17,6 +18,10 @@ This is a simple Java Swing-based chat application that allows multiple clients 
 - **Server**: The server listens for incoming connections from clients and manages client communication. It handles multiple clients simultaneously using separate threads.
 - **Client**: Clients can connect to the server, send messages, and receive messages from other clients. The user interface is built using Java Swing.
 - **DataAccess**: Manages user authentication and tracks online users in a PostgreSQL database.
+
+## Screenshots
+![image](https://github.com/Chrisvasa/JavaChat/assets/29359169/704094f0-ae6e-46b9-b95e-4afc622795cb)
+![image](https://github.com/Chrisvasa/JavaChat/assets/29359169/2246ee58-4a45-4c4a-b3cb-05881ff52996)
 
 ## Getting Started
 
