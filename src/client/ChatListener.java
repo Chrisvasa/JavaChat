@@ -7,7 +7,6 @@ import java.net.Socket;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;

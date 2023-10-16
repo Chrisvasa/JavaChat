@@ -8,7 +8,6 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.sql.SQLException;
 import javax.swing.JTextArea;
-
 import data.DataAccess;
 
 public class Client {
