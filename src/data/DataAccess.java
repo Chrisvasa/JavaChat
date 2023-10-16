@@ -6,8 +6,8 @@ import java.util.ArrayList;
 // Handles communication with the Postgres database
 public class DataAccess {
     private final static String url = "jdbc:postgresql://localhost:5432/postgres";
-    private final static String user = "postgres";
-    private final static String pass = "6464";
+    private final static String user = "";
+    private final static String pass = "";
     private static Connection conn;
 
     public static Boolean verifyLogin(String username, String password) throws SQLException {
